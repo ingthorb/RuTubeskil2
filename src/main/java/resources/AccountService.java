@@ -2,7 +2,7 @@ package resources;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import javax.ws.rs.HeaderParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 
 /**
@@ -41,6 +41,14 @@ public interface AccountService {
      * @return The user id
      * @throws JsonProcessingException  */
     public Response updateUserPw(String body,@HeaderParam("authorization") String authorization) throws JsonProcessingException;
+
+    /**
+     *
+     * @param id
+     */
+    public Response deleteUser(String body, @PathParam("id") int id, @HeaderParam("authorization") String authorization) throws JsonProcessingException;
+
+
 
     public Object mapper(String body, Class model);
 

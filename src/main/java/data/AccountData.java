@@ -124,5 +124,13 @@ public class AccountData extends RuData implements AccountDataGateway{
         }
     }
 
+    public void DeleteUser(int id){
+        JdbcTemplate queryContent = new JdbcTemplate(getDataSource());
+
+        List<UserModel> userExists = queryContent.query("select * from users where id ='" + id + "'", new UserRowMapper());
+
+        queryContent.execute("DELETE FROM token WHERE userName='" + userExists.get(0).getUserName() + "'");
+        queryContent.execute("DELETE FROM users WHERE userName='" + userExists.get(0).getUserName() + "'");
+    }
 
 }

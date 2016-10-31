@@ -13,10 +13,7 @@ import models.TokenModel;
 import models.UserModel;
 import org.json.simple.JSONObject;
 
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.security.SecureRandom;
@@ -122,6 +119,23 @@ public class AccountServiceData implements AccountService{
             wrongPassword.put("Explanation", "Incorrect password");
             return Response.status(Response.Status.UNAUTHORIZED).entity(wrongPassword.toJSONString()).build();
         }
+        return Response.status(Response.Status.OK).build();
+    }
+
+    @DELETE
+    @Path("/user/{id}/")
+    @Produces("application/json")
+    public Response deleteUser(String body,@PathParam("id") int id,@HeaderParam("authorization") String authorization) throws JsonProcessingException {
+
+        //TODO test
+        try {
+            accountDataGateway.getUserNameFromToken(authorization);
+        } catch (UnauthorizedException e) {
+            JSONObject unauthorized = new JSONObject();
+            unauthorized.put("Explanation", "Wrong Token");
+            return Response.status(Response.Status.UNAUTHORIZED).entity(unauthorized.toJSONString()).build();
+        }
+        accountDataGateway.DeleteUser(id);
         return Response.status(Response.Status.OK).build();
     }
 

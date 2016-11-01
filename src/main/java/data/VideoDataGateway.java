@@ -41,4 +41,21 @@ public interface VideoDataGateway {
      */
     public void addVideoToChannel(VideosInChannelModel videosInChannel) throws videoNotFoundException , channelNotFoundException;
 
+
+    /**
+     *
+     * @param chennelId
+     * @return
+     */
+    public List<VideoModel> getVideosInChannel(int chennelId);
+
+    /**
+     *
+     * @param videoId
+     * @throws videoNotFoundException
+     * @throws channelNotFoundException
+     */
+    public void RemoveVideo(int videoId) throws videoNotFoundException, channelNotFoundException;
+
+
 }

@@ -157,7 +157,55 @@ public class VideoServiceData implements VideoService {
     }
 
 
-    public Object mapper(String body, Class model) throws IOException {
+    @GET
+    @Path("/channel/video/{id}")
+    @Produces(ChannelModel.mediaType)
+    public Response listOfVideosInChannel(@PathParam("id") int id, @HeaderParam("authorization")  String authorization )throws JsonProcessingException {
+
+        try {
+            String username = checkAuthorization(authorization);
+        } catch (UnauthorizedException e) {
+            JSONObject unauthorized = new JSONObject();
+            unauthorized.put("Explanation", e);
+            return Response.status(Response.Status.UNAUTHORIZED).entity(unauthorized.toJSONString()).build();
+        }
+
+        List<VideoModel> videos = videoDataGateway.getVideosInChannel(id);
+
+        Gson gson = new Gson();
+        String videosInChannel = gson.toJson(videos);
+        return Response.status(Response.Status.OK).entity(videosInChannel).build();
+    }
+
+    @DELETE
+    @Path("/{id}")
+    @Produces(ChannelModel.mediaType)
+    public Response removeVideoFromChannel(@PathParam("id") int id, @HeaderParam("authorization")  String authorization )throws JsonProcessingException {
+
+        try {
+            String username = checkAuthorization(authorization);
+        } catch (UnauthorizedException e) {
+            JSONObject unauthorized = new JSONObject();
+            unauthorized.put("Explanation", e);
+            return Response.status(Response.Status.UNAUTHORIZED).entity(unauthorized.toJSONString()).build();
+        }
+
+        try {
+            videoDataGateway.RemoveVideo(id);
+        } catch (videoNotFoundException e) {
+            Gson gson = new Gson();
+            String exception = gson.toJson(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(exception).build();
+        } catch (channelNotFoundException e) {
+            Gson gson = new Gson();
+            String exception = gson.toJson(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(exception).build();
+        }
+
+        return Response.status(Response.Status.OK).build();
+    }
+
+        public Object mapper(String body, Class model) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         Object user = new Object();
 

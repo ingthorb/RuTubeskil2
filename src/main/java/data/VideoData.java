@@ -12,6 +12,7 @@ import models.VideosInChannelModel;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +63,6 @@ public class VideoData extends RuData implements VideoDataGateway {
         int returnKey = 0;
 
         returnKey = insertContent.executeAndReturnKey(parameters).intValue();
-
         return returnKey;
     }
 
@@ -133,6 +133,42 @@ public class VideoData extends RuData implements VideoDataGateway {
             return false;
         }
         return true;
+    }
+
+    public List<VideoModel> getVideosInChannel(int channelId)
+    {
+        JdbcTemplate queryContent = new JdbcTemplate(getDataSource());
+        List<VideosInChannelModel> VideosInChannel = queryContent.query("select * from VideosInChannel where channelID ='" + channelId + "'", new VideosInChannelRowMapper());
+
+        List<VideoModel> videosInChannelWithInfo  =new ArrayList<VideoModel>();
+
+        for(int i = 0; i< VideosInChannel.size(); i++){
+            List<VideoModel> video = queryContent.query("select * from videos where id ='" + VideosInChannel.get(0).getVideoID() + "'", new VideoRowMapper());
+            videosInChannelWithInfo.add(video.get(0));
+        }
+        return videosInChannelWithInfo;
+    }
+
+    public void RemoveVideo(int videoId) throws videoNotFoundException, channelNotFoundException{
+        JdbcTemplate queryContent = new JdbcTemplate(getDataSource());
+
+        //TODO remove video from fav videos
+
+        List<VideosInChannelModel> VideosInChannel = queryContent.query("select * from VideosInChannel", new VideosInChannelRowMapper());
+
+        for(int i = 0; i< VideosInChannel.size(); i++) {
+            if(VideosInChannel.get(i).getVideoID() == videoId)
+            {
+                queryContent.execute("DELETE FROM VideosInChannel WHERE videoID='" + VideosInChannel.get(i).getVideoID() + "'");
+            }
+        }
+        
+        if(doesVideoExist(videoId)){
+            queryContent.execute("DELETE FROM videos WHERE id='" + videoId + "'");
+        }
+        else{
+            throw new videoNotFoundException("Video not found videos");
+        }
     }
 
 }

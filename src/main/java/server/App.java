@@ -4,6 +4,8 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import resources.AccountServiceData;
+import resources.UserServiceData;
+import resources.VideoServiceData;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -40,6 +42,9 @@ public class App implements Closeable {
      */
     private void registerResourcesToResourceConfig(ResourceConfig resourceConfig){
         resourceConfig.register(AccountServiceData.class); //
+        resourceConfig.register(VideoServiceData.class); //
+        resourceConfig.register(UserServiceData.class); //
+
     }
 
     /**

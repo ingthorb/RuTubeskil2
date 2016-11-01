@@ -44,7 +44,13 @@ public class AccountServiceData implements AccountService{
     public Response signup(String body) throws JsonProcessingException{
 
         int userId = 0;
-        Object user = mapper(body, UserModel.class);
+        Object user = null;
+        try {
+            user = mapper(body, UserModel.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.PRECONDITION_FAILED).build();
+        }
 
         try {
             userId = accountDataGateway.addUser((UserModel)user);
@@ -73,7 +79,13 @@ public class AccountServiceData implements AccountService{
     public Response login(String body) throws JsonProcessingException {
 
         JSONObject jsonToken = new JSONObject();
-        Object user = mapper(body, UserModel.class);
+        Object user = null;
+        try {
+            user = mapper(body, UserModel.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.PRECONDITION_FAILED).build();
+        }
 
         UserModel existingUser = accountDataGateway.checkIfUserExists((UserModel)user);
 
@@ -103,7 +115,14 @@ public class AccountServiceData implements AccountService{
     public Response updateUserPw(String body,@HeaderParam("authorization") String authorization) throws JsonProcessingException {
         String username;
 
-        Object password = mapper(body, ChangePasswordModel.class);
+        Object password = null;
+        try {
+            password = mapper(body, ChangePasswordModel.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.PRECONDITION_FAILED).build();
+        }
+
         try {
             username = accountDataGateway.getUserNameFromToken(authorization);
         } catch (UnauthorizedException e) {
@@ -125,7 +144,7 @@ public class AccountServiceData implements AccountService{
     @DELETE
     @Path("/user/{id}/")
     @Produces("application/json")
-    public Response deleteUser(String body,@PathParam("id") int id,@HeaderParam("authorization") String authorization) throws JsonProcessingException {
+    public Response deleteUser(@PathParam("id") int id,@HeaderParam("authorization") String authorization) throws JsonProcessingException {
 
         //TODO test
         try {
@@ -139,13 +158,12 @@ public class AccountServiceData implements AccountService{
         return Response.status(Response.Status.OK).build();
     }
 
-
     /**
      * Maps the body parameters to the UserModel URL
      * @param body The body should include fullName, userName and password (REQUIRED) 
      * @return Object with the User
      */
-    public Object mapper(String body, Class model){
+    public Object mapper(String body, Class model) throws IOException{
         ObjectMapper mapper = new ObjectMapper();
         Object user = new Object();
 
@@ -153,6 +171,7 @@ public class AccountServiceData implements AccountService{
             user =  mapper.readValue(body,model );
         } catch (IOException e) {
             e.printStackTrace();
+            throw new IOException();
         }
         return user;
     }

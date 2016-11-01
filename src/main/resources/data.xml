@@ -26,6 +26,7 @@
     </bean>
 
     <bean id="AccountDataGateway" class="data.AccountData"/>
-
+    <bean id="VideoDataGateway" class="data.VideoData"/>
+    <bean id="UserDataGateway" class="data.UserData"/>
 
 </beans>

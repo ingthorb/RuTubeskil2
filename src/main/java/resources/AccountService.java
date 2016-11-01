@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 
 /**
  * Created by Laufey on 31/10/2016.
@@ -46,11 +47,12 @@ public interface AccountService {
      *
      * @param id
      */
-    public Response deleteUser(String body, @PathParam("id") int id, @HeaderParam("authorization") String authorization) throws JsonProcessingException;
+    @DELETE
+    @Path("/user/{id}/")
+    @Produces("application/json")
+    public Response deleteUser(@PathParam("id") int id, @HeaderParam("authorization") String authorization) throws JsonProcessingException;
 
-
-
-    public Object mapper(String body, Class model);
+    public Object mapper(String body, Class model) throws IOException;
 
     public String CreateAToken();
 

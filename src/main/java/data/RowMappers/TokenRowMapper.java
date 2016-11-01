@@ -14,7 +14,7 @@ public class TokenRowMapper implements RowMapper<TokenModel>
     public TokenModel mapRow(ResultSet rs, int rowNum) throws SQLException
     {
         TokenModel token = new TokenModel (
-                rs.getString (1),       // username
+                rs.getInt (1),       // username
                 rs.getString (2)     // token
         );
         return token;

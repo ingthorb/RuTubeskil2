@@ -26,7 +26,7 @@ public class VideoData extends RuData implements VideoDataGateway {
         SimpleJdbcInsert insertContent =
                 new SimpleJdbcInsert(getDataSource())
                         .withTableName("videos")
-                        .usingColumns("title","type","description","src","userName")
+                        .usingColumns("title","type","description","src","userId")
                         .usingGeneratedKeyColumns("id");
 
         Map<String, Object> parameters = new HashMap<String, Object>(5);
@@ -34,7 +34,7 @@ public class VideoData extends RuData implements VideoDataGateway {
         parameters.put("type", video.getType());
         parameters.put("description", video.getDescription());
         parameters.put("src", video.getSrc());
-        parameters.put("userName", video.getUserName());
+        parameters.put("userId", video.getUserId());
 
         int returnKey = 0;
 
@@ -46,8 +46,8 @@ public class VideoData extends RuData implements VideoDataGateway {
     public List<VideoModel> getVideos()
     {
         JdbcTemplate queryContent = new JdbcTemplate(getDataSource());
-        List<VideoModel> users = queryContent.query("select * from users", new VideoRowMapper());
-        return users;
+        List<VideoModel> videos = queryContent.query("select * from videos", new VideoRowMapper());
+        return videos;
     }
 
     public int addChannel(ChannelModel channel) {
@@ -162,7 +162,7 @@ public class VideoData extends RuData implements VideoDataGateway {
                 queryContent.execute("DELETE FROM VideosInChannel WHERE videoID='" + VideosInChannel.get(i).getVideoID() + "'");
             }
         }
-        
+
         if(doesVideoExist(videoId)){
             queryContent.execute("DELETE FROM videos WHERE id='" + videoId + "'");
         }

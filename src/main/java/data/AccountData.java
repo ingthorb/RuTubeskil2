@@ -2,13 +2,16 @@ package data;
 
 import data.RowMappers.TokenRowMapper;
 import data.RowMappers.UserRowMapper;
+import data.RowMappers.VideoRowMapper;
 import exceptions.InvalidPasswordException;
 import exceptions.UnauthorizedException;
 import exceptions.UserAlreadyExistsException;
+import exceptions.UserNotFoundException;
 import is.ruframework.data.RuData;
 import models.ChangePasswordModel;
 import models.TokenModel;
 import models.UserModel;
+import models.VideoModel;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -55,25 +58,24 @@ public class AccountData extends RuData implements AccountDataGateway{
         SimpleJdbcInsert insertContent =
                 new SimpleJdbcInsert(getDataSource())
                         .withTableName("token")
-                        .usingColumns("userName","token");
+                        .usingColumns("userID","token");
 
 
         Map<String, Object> parameters = new HashMap<String, Object>(2);
-        parameters.put("userName", token.getUserName());
+        parameters.put("userID", token.getUserID());
         parameters.put("token", token.getToken());
 
         JdbcTemplate queryContent = new JdbcTemplate(getDataSource());
-        List<UserModel> userExists = queryContent.query("select * from users where userName ='" + token.getUserName() + "'", new UserRowMapper());
+        List<UserModel> userExists = queryContent.query("select * from users where id ='" + token.getUserID() + "'", new UserRowMapper());
 
         if(userExists.size() != 0)
         {
-            List<TokenModel> tokenExists = queryContent.query("select * from token where userName ='" + token.getUserName() + "'", new TokenRowMapper());
+            List<TokenModel> tokenExists = queryContent.query("select * from token where userID ='" + token.getUserID() + "'", new TokenRowMapper());
 
             if(tokenExists.size() != 0){
-                System.out.println("update token set token ='" + token.getToken() + "' WHERE userName = '" + token.getUserName() +"'");
+                System.out.println("update token set token ='" + token.getToken() + "' WHERE userID = '" + token.getUserID() +"'");
 
-                queryContent.execute("update token set token ='" + token.getToken() + "' WHERE userName = '" + token.getUserName() +"'");
-                //TODO test update
+                queryContent.execute("update token set token ='" + token.getToken() + "' WHERE userID = '" + token.getUserID() +"'");
             }
             else{
                 returnKey = insertContent.execute(parameters);
@@ -82,25 +84,36 @@ public class AccountData extends RuData implements AccountDataGateway{
         return returnKey;
     }
 
-    public boolean checkIfPasswordMatches(String user,String userExists){
-        if(userExists.toString().equals(user))
+    public boolean checkIfPasswordMatches(String userPass,int userId){
+
+        JdbcTemplate queryContent = new JdbcTemplate(getDataSource());
+
+        List<UserModel> userInDb = queryContent.query("select * from users where id ='" + userId + "'", new UserRowMapper());
+
+
+        if(userInDb.get(0).getPassword().toString().equals(userPass))
         {
             return true;
         }
         return false;
     }
 
-    public UserModel checkIfUserExists(UserModel user){
+    public int getUserId(UserModel user) throws UserNotFoundException{ //getUserId
         int returnKey = 0;
         JdbcTemplate queryContent = new JdbcTemplate(getDataSource());
 
         List<UserModel> userExists = queryContent.query("select * from users where userName ='" + user.getUserName() + "'", new UserRowMapper());
 
-        return userExists.get(0);
+        if(userExists.size() == 0)
+        {
+            throw new UserNotFoundException("User does not exists. Please sign up");
+        }
+
+        return userExists.get(0).getId();
     }
 
 
-    public String getUserNameFromToken(String token) throws UnauthorizedException {
+    public int getUserIdFromToken(String token) throws UnauthorizedException {
 
         JdbcTemplate queryContent = new JdbcTemplate(getDataSource());
 
@@ -109,16 +122,16 @@ public class AccountData extends RuData implements AccountDataGateway{
         if(tokenData.size() == 0){
             throw new UnauthorizedException();
         }
-        return tokenData.get(0).getUserName();
+        return tokenData.get(0).getUserID();
     }
 
-    public void ChangePassword(ChangePasswordModel passwordModel, String username) throws InvalidPasswordException {
+    public void ChangePassword(ChangePasswordModel passwordModel, int userId) throws InvalidPasswordException {
         JdbcTemplate queryContent = new JdbcTemplate(getDataSource());
 
-        List<UserModel> userExists = queryContent.query("select * from users where userName ='" + username + "'", new UserRowMapper());
+//        List<UserModel> userExists = queryContent.query("select * from users where id ='" + userId + "'", new UserRowMapper());
 
-        if(checkIfPasswordMatches(passwordModel.getOldPassword(),userExists.get(0).getPassword())){
-            queryContent.execute("update users set password ='" + passwordModel.getNewPassword() + "' WHERE userName = '" + username +"'");
+        if(checkIfPasswordMatches(passwordModel.getOldPassword(),userId)){
+            queryContent.execute("update users set password ='" + passwordModel.getNewPassword() + "' WHERE id = '" + userId +"'");
         }
         else{
             throw new InvalidPasswordException();
@@ -128,10 +141,22 @@ public class AccountData extends RuData implements AccountDataGateway{
     public void DeleteUser(int id){
         JdbcTemplate queryContent = new JdbcTemplate(getDataSource());
 
-        List<UserModel> userExists = queryContent.query("select * from users where id ='" + id + "'", new UserRowMapper());
+        //TODO klára VIRKAR EKKI
 
-        queryContent.execute("DELETE FROM token WHERE userName='" + userExists.get(0).getUserName() + "'");
-        queryContent.execute("DELETE FROM users WHERE userName='" + userExists.get(0).getUserName() + "'");
+        //TODO remove from close friends
+        //TODO remove favorite videos
+
+        List<VideoModel> userVideos = queryContent.query("select * from videos where userId ='" + id+ "'", new VideoRowMapper());
+
+        for(int i = 0; i < userVideos.size();i++){
+            queryContent.execute("DELETE FROM VideosInChannel WHERE videoID='" + userVideos.get(i).getId() + "'");
+            //queryContent.execute("DELETE FROM favoritVideos WHERE userID='" + id + "'");
+        }
+
+        queryContent.execute("DELETE FROM videos WHERE userId='" + id + "'");
+        //queryContent.execute("DELETE FROM closeFriends WHERE userID='" + id + "'");
+        queryContent.execute("DELETE FROM token WHERE userID='" + id + "'");
+        queryContent.execute("DELETE FROM users WHERE id='" + id + "'");
     }
 
 }

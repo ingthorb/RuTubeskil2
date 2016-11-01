@@ -13,38 +13,38 @@ public class VideoModel {
 
     @NotNull
     @JsonProperty("id")
-    int id;
+     int id;
 
     @NotNull
     @JsonProperty("title")
-    String title;
+     String title;
 
     @NotNull
     @JsonProperty("type")
-    String type;
+     String type;
 
     @NotNull
     @JsonProperty("description")
-    String description;
+     String description;
 
     @NotNull
     @JsonProperty("src")
-    String src;
+     String src;
 
     @NotNull
-    @JsonProperty("userName")
-    String userName;
+    @JsonProperty("userId")
+     int userId;
 
     public VideoModel() {
     }
 
-    public VideoModel(int id, String title, String type, String description, String src, String userName) {
+    public VideoModel(int id, String title, String type, String description, String src, int userId) {
         this.id = id;
         this.title = title;
         this.type = type;
         this.description = description;
         this.src = src;
-        this.userName = userName;
+        this.userId = userId;
     }
 
     public int getId() {
@@ -87,11 +87,11 @@ public class VideoModel {
         this.src = src;
     }
 
-    public String getUserName() {
-        return userName;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

@@ -15,11 +15,11 @@ public class VideoRowMapper implements RowMapper<VideoModel> {
     {
         VideoModel video = new VideoModel (
                 rs.getInt (1),       // id
-                rs.getString (2),    // fullName
-                rs.getString (3),    // userName
-                rs.getString (4),    // email
-                rs.getString (5),  // password
-                rs.getString (5));    // password
+                rs.getString (2),    // title
+                rs.getString (3),    // type
+                rs.getString (4),    // description
+                rs.getString (5),  // src
+                rs.getInt (6));    // userId
         return video;
     }
 }

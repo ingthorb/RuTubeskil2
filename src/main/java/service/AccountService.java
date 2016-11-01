@@ -1,7 +1,6 @@
 package service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import exceptions.UnauthorizedException;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
@@ -46,12 +45,11 @@ public interface AccountService {
 
     /**
      *
-     * @param id
+     * @param authorization
+     * @return
+     * @throws JsonProcessingException
      */
-    @DELETE
-    @Path("/user/{id}/")
-    @Produces("application/json")
-    public Response deleteUser(@PathParam("id") int id, @HeaderParam("authorization") String authorization) throws JsonProcessingException;
+    public Response deleteUser( @HeaderParam("authorization") String authorization) throws JsonProcessingException;
 
     /**
      * Maps the body parameters to the UserModel URL
@@ -66,14 +64,5 @@ public interface AccountService {
      * @return
      */
     public String CreateAToken();
-
-
-    /**
-     *
-     * @param authorization
-     * @return
-     * @throws UnauthorizedException
-     */
-    public String checkAuthorization(String authorization) throws UnauthorizedException;
 
     }

@@ -13,7 +13,7 @@ public class TokenModel {
 
     @NotNull
     @JsonProperty("userName")
-    String userName;
+    int userID;
 
     @NotNull
     @JsonProperty("token")
@@ -22,8 +22,8 @@ public class TokenModel {
     public TokenModel() {
     }
 
-    public TokenModel(String userName, String token) {
-        this.userName = userName;
+    public TokenModel(int userID, String token) {
+        this.userID = userID;
         this.token = token;
     }
 
@@ -31,12 +31,12 @@ public class TokenModel {
         return mediaType;
     }
 
-    public String getUserName() {
-        return userName;
+    public int getUserID() {
+        return userID;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
     public String getToken() {

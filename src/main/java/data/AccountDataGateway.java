@@ -3,6 +3,7 @@ package data;
 import exceptions.InvalidPasswordException;
 import exceptions.UnauthorizedException;
 import exceptions.UserAlreadyExistsException;
+import exceptions.UserNotFoundException;
 import models.ChangePasswordModel;
 import models.TokenModel;
 import models.UserModel;
@@ -31,16 +32,18 @@ public interface AccountDataGateway {
      *
      * @param user
      * @return
+     * @throws UserNotFoundException
      */
-    public UserModel checkIfUserExists(UserModel user);
+    public int getUserId(UserModel user) throws UserNotFoundException;
 
     /**
      *
      * @param token
-     * @param userExists
+     * @param userId
      * @return
      */
-    public boolean checkIfPasswordMatches(String token, String userExists);
+    public boolean checkIfPasswordMatches(String token, int userId);
+
 
     /**
      *
@@ -48,15 +51,16 @@ public interface AccountDataGateway {
      * @return
      * @throws UnauthorizedException
      */
-    public String getUserNameFromToken(String token) throws UnauthorizedException;
+    public int getUserIdFromToken(String token) throws UnauthorizedException;
 
-    /**
-     *
-     * @param passwordModel
-     * @param username
-     * @throws InvalidPasswordException
-     */
-    public void ChangePassword(ChangePasswordModel passwordModel, String username) throws InvalidPasswordException;
+
+        /**
+         *
+         * @param passwordModel
+         * @param userId
+         * @throws InvalidPasswordException
+         */
+    public void ChangePassword(ChangePasswordModel passwordModel, int userId) throws InvalidPasswordException;
 
     /**
      *

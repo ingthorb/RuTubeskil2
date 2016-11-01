@@ -6,6 +6,7 @@ import exceptions.UserAlreadyExistsException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import data.AccountDataGateway;
+import exceptions.UserNotFoundException;
 import is.ruframework.data.RuDataAccessFactory;
 import is.ruframework.domain.RuException;
 import models.ChangePasswordModel;
@@ -39,7 +40,7 @@ public class AccountServiceData implements AccountService{
     }
 
     @POST
-    @Path("/user/")
+    @Path("/user")
     @Produces("application/json")
     public Response signup(String body) throws JsonProcessingException{
 
@@ -58,12 +59,11 @@ public class AccountServiceData implements AccountService{
             e.printStackTrace();
             JSONObject userExists = new JSONObject();
             userExists.put("Explanation", "User with this username already exists");
-            return Response.status(Response.Status.PRECONDITION_FAILED).entity(userExists.toJSONString()).build();
+            return Response.status(Response.Status.CONFLICT).entity(userExists.toJSONString()).build();
         }
 
-
         String token = CreateAToken();
-        TokenModel tokenData = new TokenModel(((UserModel) user).getUserName(),token);
+        TokenModel tokenData = new TokenModel(userId,token);
         accountDataGateway.addToken(tokenData);
 
         JSONObject jsonUser = new JSONObject();
@@ -74,9 +74,11 @@ public class AccountServiceData implements AccountService{
     }
 
     @POST
-    @Path("/login/")
+    @Path("/login")
     @Produces(UserModel.mediaType)
     public Response login(String body) throws JsonProcessingException {
+
+        int userId;
 
         JSONObject jsonToken = new JSONObject();
         Object user = null;
@@ -87,33 +89,35 @@ public class AccountServiceData implements AccountService{
             return Response.status(Response.Status.PRECONDITION_FAILED).build();
         }
 
-        UserModel existingUser = accountDataGateway.checkIfUserExists((UserModel)user);
-
-        if(existingUser == null) {
+        try {
+            userId = accountDataGateway.getUserId((UserModel)user);
+        } catch (UserNotFoundException e) {
             JSONObject userDoesNotExist = new JSONObject();
             userDoesNotExist.put("Explanation", "User with this username does not exist");
-            return Response.status(Response.Status.PRECONDITION_FAILED).entity(userDoesNotExist.toJSONString()).build();
+            return Response.status(Response.Status.NOT_FOUND).entity(userDoesNotExist.toJSONString()).build();
+
         }
 
-        if(!accountDataGateway.checkIfPasswordMatches(((UserModel) user).getPassword(), existingUser.getPassword())){
+        if(!accountDataGateway.checkIfPasswordMatches(((UserModel) user).getPassword(), userId)){
             JSONObject wrongPassword = new JSONObject();
             wrongPassword.put("Explanation", "Incorrect password");
-            return Response.status(Response.Status.PRECONDITION_FAILED).entity(wrongPassword.toJSONString()).build();
+            return Response.status(Response.Status.UNAUTHORIZED).entity(wrongPassword.toJSONString()).build();
         }
 
         String token = CreateAToken();
-        TokenModel tokenData = new TokenModel(((UserModel) user).getUserName(),token);
+        TokenModel tokenData = new TokenModel(userId,token);
         accountDataGateway.addToken(tokenData);
 
         jsonToken.put("token", token);
+        jsonToken.put("userId", userId);
         return Response.status(Response.Status.OK).entity(jsonToken.toJSONString()).build();
     }
 
     @POST
-    @Path("/user/password/")
+    @Path("/user/password")
     @Produces(ChangePasswordModel.mediaType)
     public Response updateUserPw(String body,@HeaderParam("authorization") String authorization) throws JsonProcessingException {
-        String username;
+        int  userId;
 
         Object password = null;
         try {
@@ -124,7 +128,7 @@ public class AccountServiceData implements AccountService{
         }
 
         try {
-            username = accountDataGateway.getUserNameFromToken(authorization);
+            userId = accountDataGateway.getUserIdFromToken(authorization);
         } catch (UnauthorizedException e) {
             JSONObject unauthorized = new JSONObject();
             unauthorized.put("Explanation", "Wrong token - You need to be signed in to perform this action ");
@@ -132,7 +136,7 @@ public class AccountServiceData implements AccountService{
         }
 
         try {
-            accountDataGateway.ChangePassword((ChangePasswordModel) password, username);
+            accountDataGateway.ChangePassword((ChangePasswordModel) password, userId);
         } catch (InvalidPasswordException e) {
             JSONObject wrongPassword = new JSONObject();
             wrongPassword.put("Explanation", "Incorrect password");
@@ -142,19 +146,21 @@ public class AccountServiceData implements AccountService{
     }
 
     @DELETE
-    @Path("/user/{id}/")
+    @Path("/user")
     @Produces("application/json")
-    public Response deleteUser(@PathParam("id") int id,@HeaderParam("authorization") String authorization) throws JsonProcessingException {
+    public Response deleteUser(@HeaderParam("authorization") String authorization) throws JsonProcessingException {
+        //TODO klára
+        int userId;
 
-        //TODO test
         try {
-            accountDataGateway.getUserNameFromToken(authorization);
+            userId = accountDataGateway.getUserIdFromToken(authorization);
         } catch (UnauthorizedException e) {
             JSONObject unauthorized = new JSONObject();
-            unauthorized.put("Explanation", "Wrong Token");
+            unauthorized.put("Explanation", "Wrong token - You need to be signed in to perform this action ");
             return Response.status(Response.Status.UNAUTHORIZED).entity(unauthorized.toJSONString()).build();
         }
-        accountDataGateway.DeleteUser(id);
+
+        accountDataGateway.DeleteUser(userId);
         return Response.status(Response.Status.OK).build();
     }
 
@@ -180,13 +186,4 @@ public class AccountServiceData implements AccountService{
         return token;
     }
 
-    public String checkAuthorization(String authorization) throws UnauthorizedException{
-        String username = "";
-        try {
-            username = accountDataGateway.getUserNameFromToken(authorization);
-        } catch (UnauthorizedException e) {
-            throw new UnauthorizedException( "Wrong token - You need to be signed in to perform this action ");
-        }
-        return username;
-    }
 }

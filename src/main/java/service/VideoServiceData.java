@@ -48,11 +48,13 @@ public class VideoServiceData implements VideoService {
 
         Object video = null;
 
+        int userId;
+
         try {
-            String username = checkAuthorization(authorization);
+            userId = accountDataGateway.getUserIdFromToken(authorization);
         } catch (UnauthorizedException e) {
             JSONObject unauthorized = new JSONObject();
-            unauthorized.put("Explanation", e);
+            unauthorized.put("Explanation", "Wrong token - You need to be signed in to perform this action ");
             return Response.status(Response.Status.UNAUTHORIZED).entity(unauthorized.toJSONString()).build();
         }
 
@@ -74,11 +76,13 @@ public class VideoServiceData implements VideoService {
     @Produces(VideoModel.mediaType)
     public Response ListOfVideos( @HeaderParam("authorization") String authorization ) throws JsonProcessingException {
 
+        int userId;
+
         try {
-            String username = checkAuthorization(authorization);
+            userId = accountDataGateway.getUserIdFromToken(authorization);
         } catch (UnauthorizedException e) {
             JSONObject unauthorized = new JSONObject();
-            unauthorized.put("Explanation", e);
+            unauthorized.put("Explanation", "Wrong token - You need to be signed in to perform this action ");
             return Response.status(Response.Status.UNAUTHORIZED).entity(unauthorized.toJSONString()).build();
         }
 
@@ -96,11 +100,13 @@ public class VideoServiceData implements VideoService {
 
         Object channel = null;
 
+        int userId;
+
         try {
-            String username = checkAuthorization(authorization);
+            userId = accountDataGateway.getUserIdFromToken(authorization);
         } catch (UnauthorizedException e) {
             JSONObject unauthorized = new JSONObject();
-            unauthorized.put("Explanation", e);
+            unauthorized.put("Explanation", "Wrong token - You need to be signed in to perform this action ");
             return Response.status(Response.Status.UNAUTHORIZED).entity(unauthorized.toJSONString()).build();
         }
 
@@ -125,11 +131,13 @@ public class VideoServiceData implements VideoService {
 
         Object videoToChannel = null;
 
+        int userId;
+
         try {
-            String username = checkAuthorization(authorization);
+            userId = accountDataGateway.getUserIdFromToken(authorization);
         } catch (UnauthorizedException e) {
             JSONObject unauthorized = new JSONObject();
-            unauthorized.put("Explanation", e);
+            unauthorized.put("Explanation", "Wrong token - You need to be signed in to perform this action ");
             return Response.status(Response.Status.UNAUTHORIZED).entity(unauthorized.toJSONString()).build();
         }
 
@@ -162,11 +170,13 @@ public class VideoServiceData implements VideoService {
     @Produces(ChannelModel.mediaType)
     public Response listOfVideosInChannel(@PathParam("id") int id, @HeaderParam("authorization")  String authorization )throws JsonProcessingException {
 
+        int userId;
+
         try {
-            String username = checkAuthorization(authorization);
+            userId = accountDataGateway.getUserIdFromToken(authorization);
         } catch (UnauthorizedException e) {
             JSONObject unauthorized = new JSONObject();
-            unauthorized.put("Explanation", e);
+            unauthorized.put("Explanation", "Wrong token - You need to be signed in to perform this action ");
             return Response.status(Response.Status.UNAUTHORIZED).entity(unauthorized.toJSONString()).build();
         }
 
@@ -180,13 +190,15 @@ public class VideoServiceData implements VideoService {
     @DELETE
     @Path("/{id}")
     @Produces(ChannelModel.mediaType)
-    public Response removeVideoFromChannel(@PathParam("id") int id, @HeaderParam("authorization")  String authorization )throws JsonProcessingException {
+    public Response removeVideo(@PathParam("id") int id, @HeaderParam("authorization")  String authorization )throws JsonProcessingException {
+
+        int userId;
 
         try {
-            String username = checkAuthorization(authorization);
+            userId = accountDataGateway.getUserIdFromToken(authorization);
         } catch (UnauthorizedException e) {
             JSONObject unauthorized = new JSONObject();
-            unauthorized.put("Explanation", e);
+            unauthorized.put("Explanation", "Wrong token - You need to be signed in to perform this action ");
             return Response.status(Response.Status.UNAUTHORIZED).entity(unauthorized.toJSONString()).build();
         }
 
@@ -205,7 +217,7 @@ public class VideoServiceData implements VideoService {
         return Response.status(Response.Status.OK).build();
     }
 
-        public Object mapper(String body, Class model) throws IOException {
+    public Object mapper(String body, Class model) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         Object user = new Object();
 
@@ -216,15 +228,5 @@ public class VideoServiceData implements VideoService {
             throw new IOException();
         }
         return user;
-    }
-
-    public String checkAuthorization(String authorization) throws UnauthorizedException{
-        String username = "";
-        try {
-            username = accountDataGateway.getUserNameFromToken(authorization);
-        } catch (UnauthorizedException e) {
-            throw new UnauthorizedException( "Wrong token - You need to be signed in to perform this action ");
-        }
-        return username;
     }
 }

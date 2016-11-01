@@ -1,8 +1,10 @@
 package data;
 
-import Exceptions.InvalidPasswordException;
-import Exceptions.UnauthorizedException;
-import Exceptions.UserAlreadyExistsException;
+import data.RowMappers.TokenRowMapper;
+import data.RowMappers.UserRowMapper;
+import exceptions.InvalidPasswordException;
+import exceptions.UnauthorizedException;
+import exceptions.UserAlreadyExistsException;
 import is.ruframework.data.RuData;
 import models.ChangePasswordModel;
 import models.TokenModel;
@@ -18,7 +20,6 @@ import java.util.Map;
 /**
  * Created by Laufey on 31/10/2016.
  */
-
 
 public class AccountData extends RuData implements AccountDataGateway{
 

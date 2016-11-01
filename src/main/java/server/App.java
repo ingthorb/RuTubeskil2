@@ -3,9 +3,9 @@ package server;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
-import resources.AccountServiceData;
-import resources.UserServiceData;
-import resources.VideoServiceData;
+import service.AccountServiceData;
+import service.UserServiceData;
+import service.VideoServiceData;
 
 import java.io.Closeable;
 import java.io.IOException;

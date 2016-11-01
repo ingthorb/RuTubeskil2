@@ -1,4 +1,4 @@
-package Exceptions;
+package exceptions;
 
 /**
  * Created by Laufey on 31/10/2016.

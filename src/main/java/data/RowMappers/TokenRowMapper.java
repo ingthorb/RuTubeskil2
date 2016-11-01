@@ -1,4 +1,4 @@
-package data;
+package data.RowMappers;
 
 import models.TokenModel;
 import org.springframework.jdbc.core.RowMapper;

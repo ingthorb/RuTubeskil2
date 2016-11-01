@@ -31,12 +31,9 @@ FOREIGN KEY (userName)
 references ru.users(userName)
 )
 
---ÞESSAR ERU EKKI KOMNAR INNÍ DB
-
-
 CREATE TABLE ru.channels
 (
- channelID int,
+ channelID int auto_increment primary key NOT NULL,
  channelName varchar(512)
 )
 
@@ -46,10 +43,12 @@ CREATE TABLE ru.VideosInChannel
   channelID int,
 
   FOREIGN KEY (videoID)
-  references videos(id),
+  references ru.videos(id),
+
   foreign key (channelID)
-  references channels(id)
+  references ru.channels(channelID)
 )
+--ÞESSAR ERU EKKI KOMNAR INNÍ DB
 
 
 CREATE TABLE ru.closeFriends(

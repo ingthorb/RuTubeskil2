@@ -1,8 +1,8 @@
 package data;
 
-import Exceptions.InvalidPasswordException;
-import Exceptions.UnauthorizedException;
-import Exceptions.UserAlreadyExistsException;
+import exceptions.InvalidPasswordException;
+import exceptions.UnauthorizedException;
+import exceptions.UserAlreadyExistsException;
 import models.ChangePasswordModel;
 import models.TokenModel;
 import models.UserModel;

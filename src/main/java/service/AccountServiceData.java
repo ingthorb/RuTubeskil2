@@ -1,8 +1,8 @@
-package resources;
+package service;
 
-import Exceptions.InvalidPasswordException;
-import Exceptions.UnauthorizedException;
-import Exceptions.UserAlreadyExistsException;
+import exceptions.InvalidPasswordException;
+import exceptions.UnauthorizedException;
+import exceptions.UserAlreadyExistsException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import data.AccountDataGateway;
@@ -60,13 +60,13 @@ public class AccountServiceData implements AccountService{
             userExists.put("Explanation", "User with this username already exists");
             return Response.status(Response.Status.PRECONDITION_FAILED).entity(userExists.toJSONString()).build();
         }
-        JSONObject jsonUser = new JSONObject();
+
 
         String token = CreateAToken();
         TokenModel tokenData = new TokenModel(((UserModel) user).getUserName(),token);
         accountDataGateway.addToken(tokenData);
 
-        jsonUser = new JSONObject();
+        JSONObject jsonUser = new JSONObject();
         jsonUser.put("id", userId);
         jsonUser.put("token", token);
 
@@ -158,11 +158,7 @@ public class AccountServiceData implements AccountService{
         return Response.status(Response.Status.OK).build();
     }
 
-    /**
-     * Maps the body parameters to the UserModel URL
-     * @param body The body should include fullName, userName and password (REQUIRED) 
-     * @return Object with the User
-     */
+
     public Object mapper(String body, Class model) throws IOException{
         ObjectMapper mapper = new ObjectMapper();
         Object user = new Object();
@@ -176,10 +172,6 @@ public class AccountServiceData implements AccountService{
         return user;
     }
 
-    /**
-     *
-     * @return
-     */
     public String CreateAToken() {
         SecureRandom random = new SecureRandom();
         byte bytes[] = new byte[20];
@@ -188,5 +180,13 @@ public class AccountServiceData implements AccountService{
         return token;
     }
 
-
+    public String checkAuthorization(String authorization) throws UnauthorizedException{
+        String username = "";
+        try {
+            username = accountDataGateway.getUserNameFromToken(authorization);
+        } catch (UnauthorizedException e) {
+            throw new UnauthorizedException( "Wrong token - You need to be signed in to perform this action ");
+        }
+        return username;
+    }
 }

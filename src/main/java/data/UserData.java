@@ -13,6 +13,12 @@ import java.util.Map;
 public class UserData extends RuData implements UserDataGateway {
 
     public int addCloseFriend(CloseFriendsModel closeFriend , int userId) {
+
+        //TODO check if friendExits
+
+        //TODO check if isAlredyACloseFriend
+
+
         SimpleJdbcInsert insertContent =
                 new SimpleJdbcInsert(getDataSource())
                         .withTableName("closeFriends")
@@ -24,9 +30,6 @@ public class UserData extends RuData implements UserDataGateway {
         parameters.put("friendID", closeFriend.getUserID());
 
         int returnKey = 0;
-
-        //TODO check if friendExits
-        //TODO check if isAlredyACloseFriend
 
         returnKey = insertContent.executeAndReturnKey(parameters).intValue();
 

@@ -18,7 +18,7 @@ public interface VideoDataGateway {
      * @param video
      * @return
      */
-    public int addVideo(VideoModel video);
+    public int addVideo(VideoModel video, int userId);
 
 
     /**

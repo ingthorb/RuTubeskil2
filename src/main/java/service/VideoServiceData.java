@@ -65,7 +65,7 @@ public class VideoServiceData implements VideoService {
             return Response.status(Response.Status.PRECONDITION_FAILED).build();
         }
 
-        int videoId = videoDataGateway.addVideo((VideoModel)video);
+        int videoId = videoDataGateway.addVideo((VideoModel)video, userId);
 
         Gson gson = new Gson();
         String addedVideo = gson.toJson(videoId);

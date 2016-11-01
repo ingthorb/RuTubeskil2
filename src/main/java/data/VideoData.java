@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public class VideoData extends RuData implements VideoDataGateway {
 
-    public int addVideo(VideoModel video) {
+    public int addVideo(VideoModel video, int userId) {
         SimpleJdbcInsert insertContent =
                 new SimpleJdbcInsert(getDataSource())
                         .withTableName("videos")
@@ -34,7 +34,7 @@ public class VideoData extends RuData implements VideoDataGateway {
         parameters.put("type", video.getType());
         parameters.put("description", video.getDescription());
         parameters.put("src", video.getSrc());
-        parameters.put("userId", video.getUserId());
+        parameters.put("userId", userId);
 
         int returnKey = 0;
 

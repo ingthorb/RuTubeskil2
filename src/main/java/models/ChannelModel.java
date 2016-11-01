@@ -26,6 +26,9 @@ public class ChannelModel {
         this.channelID = channelID;
         this.channelName = channelName;
     }
+    public ChannelModel(String channelName) {
+        this.channelName = channelName;
+    }
 
     public int getChannelID() {
         return channelID;

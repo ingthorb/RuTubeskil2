@@ -46,6 +46,13 @@ public class VideoModel {
         this.src = src;
         this.userId = userId;
     }
+    public VideoModel( String title, String type, String description, String src, int userId) {
+        this.title = title;
+        this.type = type;
+        this.description = description;
+        this.src = src;
+        this.userId = userId;
+    }
 
     public int getId() {
         return id;

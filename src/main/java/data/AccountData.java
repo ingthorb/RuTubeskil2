@@ -128,8 +128,6 @@ public class AccountData extends RuData implements AccountDataGateway{
     public void ChangePassword(ChangePasswordModel passwordModel, int userId) throws InvalidPasswordException {
         JdbcTemplate queryContent = new JdbcTemplate(getDataSource());
 
-//        List<UserModel> userExists = queryContent.query("select * from users where id ='" + userId + "'", new UserRowMapper());
-
         if(checkIfPasswordMatches(passwordModel.getOldPassword(),userId)){
             queryContent.execute("update users set password ='" + passwordModel.getNewPassword() + "' WHERE id = '" + userId +"'");
         }
@@ -141,7 +139,7 @@ public class AccountData extends RuData implements AccountDataGateway{
     public void DeleteUser(int id){
         JdbcTemplate queryContent = new JdbcTemplate(getDataSource());
 
-        //TODO klára VIRKAR EKKI
+        //TODO klára
 
         //TODO remove from close friends
         //TODO remove favorite videos

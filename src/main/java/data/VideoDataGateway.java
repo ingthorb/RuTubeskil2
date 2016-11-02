@@ -8,9 +8,6 @@ import models.VideosInChannelModel;
 
 import java.util.List;
 
-/**
- * Created by Laufey on 01/11/2016.
- */
 public interface VideoDataGateway {
 
     /**
@@ -19,7 +16,6 @@ public interface VideoDataGateway {
      * @return
      */
     public int addVideo(VideoModel video, int userId);
-
 
     /**
      *
@@ -41,7 +37,6 @@ public interface VideoDataGateway {
      */
     public void addVideoToChannel(VideosInChannelModel videosInChannel) throws videoNotFoundException , channelNotFoundException;
 
-
     /**
      *
      * @param chennelId
@@ -56,6 +51,4 @@ public interface VideoDataGateway {
      * @throws channelNotFoundException
      */
     public void RemoveVideo(int videoId) throws videoNotFoundException, channelNotFoundException;
-
-
 }

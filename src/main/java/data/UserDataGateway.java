@@ -1,5 +1,7 @@
 package data;
 
+import exceptions.UserAlreadyACloseFriendException;
+import exceptions.UserNotFoundException;
 import models.CloseFriendsModel;
 
 /**
@@ -7,6 +9,8 @@ import models.CloseFriendsModel;
  */
 public interface UserDataGateway {
 
-    public int addCloseFriend(CloseFriendsModel closeFriend,int userId);
+    public int addCloseFriend(CloseFriendsModel closeFriend,int userId)  throws UserNotFoundException, UserAlreadyACloseFriendException;
+
+    public void DeleteCloseFriend(int friendId,int userId) throws UserNotFoundException;
 
 }

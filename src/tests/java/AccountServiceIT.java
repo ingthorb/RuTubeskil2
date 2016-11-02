@@ -11,13 +11,13 @@ import org.json.simple.parser.ParseException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-
 import server.App;
+
+import static org.junit.Assert.assertEquals;
 
 
 /**
@@ -37,7 +37,7 @@ public class AccountServiceIT extends RuData{
     Login wrongPassword = new Login("MartyJunior","1233333");
 
     //Need to change before test
-    UserModel newUser = new UserModel("Marty Mcfly","Back","marty@future.is","1234");
+    UserModel newUser = new UserModel("Marty Mcfly","Basdaacdk","marty@future.is","1234");
 
     RestTemplate restTemplate = new RestTemplate();
     HttpHeaders headers = new HttpHeaders();

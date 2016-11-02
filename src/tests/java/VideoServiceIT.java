@@ -1,6 +1,4 @@
-import com.google.gson.Gson;
 import data.AccountDataGateway;
-import exceptions.UserNotFoundException;
 import is.ruframework.data.RuDataAccessFactory;
 import is.ruframework.domain.RuException;
 import models.ChannelModel;
@@ -16,11 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-
 import server.App;
-import service.VideoService;
-
-import java.nio.channels.Channel;
 
 import static org.junit.Assert.assertEquals;
 
@@ -109,6 +103,7 @@ public class VideoServiceIT {
     @Test
     public void addAVideo()
     {
+
         //Get out of database some token
         //Get the videos with a get request
         /*
@@ -132,9 +127,9 @@ public class VideoServiceIT {
         assertEquals(true,videoAdded);
 
     }
-    @Test
-    public void addAVideoInChannel()
-    {
+//    @Test
+//    public void addAVideoInChannel()
+//    {
         //Hardcoded
         // headers.add("Authorization","[B@5db60c16");
 
@@ -150,8 +145,8 @@ public class VideoServiceIT {
         JSONObject results = (JSONObject) parser(result);
         //boolean videoAdded = videoJSON.get("id").equals(results.get("id"));
         //assertEquals(true,videoAdded);
-*/
-    }
+//*/
+//    }
     @After
     public void shutDownServer()
     {

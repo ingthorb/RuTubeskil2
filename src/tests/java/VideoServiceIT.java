@@ -2,7 +2,6 @@
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.sun.research.ws.wadl.HTTPMethods;
 import data.AccountDataGateway;
 import is.ruframework.data.RuDataAccessFactory;
 import is.ruframework.domain.RuException;
@@ -128,9 +127,14 @@ public class VideoServiceIT {
          */
         headers.add("Authorization","[B@5db60c16");
         //Videos get all the videos in the database
-        String videos = restTemplate.getForObject(url, String.class);
+//        String videos = restTemplate.getForObject(url, String.class);
+
+        HttpEntity<String> ent2 = new HttpEntity<String>(headers);
+
+        HttpEntity<String> videos = restTemplate.exchange(url, HttpMethod.GET, ent2 ,String.class, "");
+
         JsonParser parser = new JsonParser();
-        JsonArray o = parser.parse(videos).getAsJsonArray();
+        JsonArray o = parser.parse(videos.getBody().toString()).getAsJsonArray();
         boolean videoAdded = false;
         for (int i = 0; i < o.size(); ++i) {
             JsonElement obj =  o.get(i);
@@ -171,18 +175,20 @@ public class VideoServiceIT {
 
         final String checkChannelURL = "http://127.0.0.1:8080/videos/channel/video/" + channelnewID;
         //String result2 = null;
+        HttpEntity<String> result2 = new HttpEntity<String>("");
         try
         {
             HttpEntity<String> ent2 = new HttpEntity<String>(headers);
 
-            HttpEntity<String> result2 = restTemplate.exchange(checkChannelURL, HttpMethod.GET, ent2 ,String.class, "");
+            result2 = restTemplate.exchange(checkChannelURL, HttpMethod.GET, ent2 ,String.class, "");
         }
         catch (HttpClientErrorException hs)
         {
             hs.printStackTrace();
         }
         JsonParser parser = new JsonParser();
-        JsonArray o = parser.parse(result2).getAsJsonArray();
+
+        JsonArray o = parser.parse(result2.getBody().toString()).getAsJsonArray();
         boolean videoAddedToChannel = false;
         for (int i = 0; i < o.size(); ++i) {
             JsonElement obj =  o.get(i);
@@ -213,22 +219,20 @@ public class VideoServiceIT {
         HttpEntity ent1 = new HttpEntity(headers);
 
         //Delete the video
-        restTemplate.delete(deleteVideoUrl,ent1,String.class);
+        //restTemplate.delete(deleteVideoUrl,ent1,String.class);
+        HttpEntity<String>  deleteVideo = restTemplate.exchange(deleteVideoUrl, HttpMethod.DELETE, ent1 ,String.class, "");
+
         //Get all the videos in the channel
 
         //Returns a list of videos<VideoModel>
-        String videos = null;
-        try {
-            HttpEntity ent2 = new HttpEntity(headers);
+//        HttpEntity<String> videos = new HttpEntity<String>("");
 
-            videos = restTemplate.getForObject(url, String.class);
-        }
-        catch (HttpClientErrorException hs)
-        {
-            hs.printStackTrace();
-        }
+        HttpEntity<String> ent2 = new HttpEntity<String>(headers);
+
+        HttpEntity<String>  videos = restTemplate.exchange(url, HttpMethod.GET, ent2 ,String.class, "");
+
         JsonParser parser = new JsonParser();
-        JsonArray o = parser.parse(videos).getAsJsonArray();
+        JsonArray o = parser.parse(videos.getBody().toString()).getAsJsonArray();
         boolean videoInList = false;
         for (int i = 0; i < o.size(); ++i) {
             JsonElement obj =  o.get(i);

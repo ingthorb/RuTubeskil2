@@ -128,8 +128,6 @@ public class AccountData extends RuData implements AccountDataGateway{
     public void ChangePassword(ChangePasswordModel passwordModel, int userId) throws InvalidPasswordException {
         JdbcTemplate queryContent = new JdbcTemplate(getDataSource());
 
-//        List<UserModel> userExists = queryContent.query("select * from users where id ='" + userId + "'", new UserRowMapper());
-
         if(checkIfPasswordMatches(passwordModel.getOldPassword(),userId)){
             queryContent.execute("update users set password ='" + passwordModel.getNewPassword() + "' WHERE id = '" + userId +"'");
         }
@@ -141,20 +139,18 @@ public class AccountData extends RuData implements AccountDataGateway{
     public void DeleteUser(int id){
         JdbcTemplate queryContent = new JdbcTemplate(getDataSource());
 
-        //TODO klára VIRKAR EKKI
-
-        //TODO remove from close friends
-        //TODO remove favorite videos
+        //TODO klára TESTA
 
         List<VideoModel> userVideos = queryContent.query("select * from videos where userId ='" + id+ "'", new VideoRowMapper());
 
         for(int i = 0; i < userVideos.size();i++){
             queryContent.execute("DELETE FROM VideosInChannel WHERE videoID='" + userVideos.get(i).getId() + "'");
-            //queryContent.execute("DELETE FROM favoritVideos WHERE userID='" + id + "'");
+        //TODO TEST
+            queryContent.execute("DELETE FROM favoritVideos WHERE userID='" + id + "'");
         }
 
         queryContent.execute("DELETE FROM videos WHERE userId='" + id + "'");
-        //queryContent.execute("DELETE FROM closeFriends WHERE userID='" + id + "'");
+        queryContent.execute("DELETE FROM closeFriends WHERE userID='" + id + "'");
         queryContent.execute("DELETE FROM token WHERE userID='" + id + "'");
         queryContent.execute("DELETE FROM users WHERE id='" + id + "'");
     }

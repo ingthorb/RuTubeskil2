@@ -19,9 +19,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-
 import server.App;
-
 
 import static org.junit.Assert.assertEquals;
 /**
@@ -110,6 +108,12 @@ public class VideoServiceIT {
     {
         String result2 = restTemplate.postForObject(url,video, String.class);
 
+        //Get out of database some token
+        //Get the videos with a get request
+        /*
+        Get the user with the ID 1
+         */
+        headers.add("Authorization","[B@5db60c16");
         //Videos get all the videos in the database
         String videos = restTemplate.getForObject(url, String.class);
         JsonParser parser = new JsonParser();
@@ -130,7 +134,7 @@ public class VideoServiceIT {
 
     }
     @Test
-    public void addAVideoInChannel()
+   public void addAVideoInChannel()
     {
         //Hardcoded
         // headers.add("Authorization","[B@5db60c16");
@@ -188,6 +192,7 @@ public class VideoServiceIT {
         final String deleteVideoUrl = "http://127.0.0.1:8080/videos/" + videoID;
         System.out.println(deleteVideoUrl);
 
+
         //Delete the video
         restTemplate.delete(deleteVideoUrl,String.class);
         //Get all the videos in the channel
@@ -216,6 +221,7 @@ public class VideoServiceIT {
         }
         assertEquals(false,videoInList);
     }
+
 
     @After
     public void shutDownServer()

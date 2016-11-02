@@ -2,8 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c6446cd5-b2e7-4c0f-b2cf-1784ea334a16" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/exceptions/UserAlreadyACloseFriendException.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/exceptions/videoAlreadyAFavoritVideoxception.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/models/VideosInChannelModel.java" afterPath="$PROJECT_DIR$/src/main/java/models/VideosInChannelModel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jersey-server.iml" afterPath="$PROJECT_DIR$/jersey-server.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/data/AccountData.java" afterPath="$PROJECT_DIR$/src/main/java/data/AccountData.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/data/UserData.java" afterPath="$PROJECT_DIR$/src/main/java/data/UserData.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/data/UserDataGateway.java" afterPath="$PROJECT_DIR$/src/main/java/data/UserDataGateway.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/data/VideoData.java" afterPath="$PROJECT_DIR$/src/main/java/data/VideoData.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/data/VideoDataGateway.java" afterPath="$PROJECT_DIR$/src/main/java/data/VideoDataGateway.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/models/UserModel.java" afterPath="$PROJECT_DIR$/src/main/java/models/UserModel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/service/UserService.java" afterPath="$PROJECT_DIR$/src/main/java/service/UserService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/service/UserServiceData.java" afterPath="$PROJECT_DIR$/src/main/java/service/UserServiceData.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/service/VideoServiceData.java" afterPath="$PROJECT_DIR$/src/main/java/service/VideoServiceData.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/tests/java/AccountServiceIT.java" afterPath="$PROJECT_DIR$/src/tests/java/AccountServiceIT.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/tests/java/VideoServiceIT.java" afterPath="$PROJECT_DIR$/src/tests/java/VideoServiceIT.java" />
@@ -80,8 +91,8 @@
       <file leaf-file-name="VideoServiceIT.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/tests/java/VideoServiceIT.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="389">
-              <caret line="75" column="9" selection-start-line="75" selection-start-column="9" selection-end-line="75" selection-end-column="9" />
+            <state relative-caret-position="221">
+              <caret line="37" column="31" selection-start-line="37" selection-start-column="20" selection-end-line="37" selection-end-column="31" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -102,8 +113,8 @@
       <file leaf-file-name="VideoServiceData.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/service/VideoServiceData.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="69" column="31" selection-start-line="69" selection-start-column="31" selection-end-line="69" selection-end-column="31" />
+            <state relative-caret-position="527">
+              <caret line="53" column="72" selection-start-line="53" selection-start-column="59" selection-end-line="53" selection-end-column="72" />
               <folding />
             </state>
           </provider>
@@ -112,8 +123,8 @@
       <file leaf-file-name="AccountServiceIT.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/tests/java/AccountServiceIT.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="231">
-              <caret line="39" column="63" selection-start-line="39" selection-start-column="63" selection-end-line="39" selection-end-column="63" />
+            <state relative-caret-position="27">
+              <caret line="39" column="56" selection-start-line="39" selection-start-column="56" selection-end-line="39" selection-end-column="56" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -135,20 +146,16 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/data/AccountData.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-136">
-              <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
+              <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
               <folding>
-                <marker date="1478041684545" expanded="true" signature="2387:2444" ph="select * fro... users" />
-                <marker date="1478041684545" expanded="true" signature="2578:2639" ph="select * fro... token" />
-                <marker date="1478041684545" expanded="true" signature="2878:2970" ph="update token... " />
-                <marker date="1478041684545" expanded="true" signature="3325:3371" ph="select * fro... users" />
-                <marker date="1478041684545" expanded="true" signature="3781:3845" ph="select * fro... users" />
-                <marker date="1478041684545" expanded="true" signature="4271:4319" ph="select * fro... token" />
-                <marker date="1478041684545" expanded="true" signature="4914:5008" ph="update users... " />
-                <marker date="1478041684545" expanded="true" signature="5383:5429" ph="select * fro... videos" />
-                <marker date="1478041684545" expanded="true" signature="5541:5618" ph="DELETE FROM " />
-                <marker date="1478041684545" expanded="true" signature="5754:5798" ph="DELETE FROM " />
-                <marker date="1478041684545" expanded="true" signature="5918:5961" ph="DELETE FROM " />
-                <marker date="1478041684545" expanded="true" signature="5995:6034" ph="DELETE FROM " />
+                <marker date="1478065176198" expanded="true" signature="2387:2444" ph="select * fro... users" />
+                <marker date="1478065176198" expanded="true" signature="2578:2639" ph="select * fro... token" />
+                <marker date="1478065176198" expanded="true" signature="2878:2970" ph="update token... " />
+                <marker date="1478065176198" expanded="true" signature="3325:3371" ph="select * fro... users" />
+                <marker date="1478065176198" expanded="true" signature="3781:3845" ph="select * fro... users" />
+                <marker date="1478065176198" expanded="true" signature="4271:4319" ph="select * fro... token" />
+                <marker date="1478065176198" expanded="true" signature="5717:5760" ph="DELETE FROM " />
+                <marker date="1478065176198" expanded="true" signature="5794:5833" ph="DELETE FROM " />
               </folding>
             </state>
           </provider>
@@ -201,8 +208,8 @@
         <option value="$PROJECT_DIR$/src/main/java/models/ChannelModel.java" />
         <option value="$PROJECT_DIR$/src/main/java/models/VideoModel.java" />
         <option value="$PROJECT_DIR$/src/main/java/models/VideosInChannelModel.java" />
-        <option value="$PROJECT_DIR$/src/tests/java/VideoServiceIT.java" />
         <option value="$PROJECT_DIR$/src/tests/java/AccountServiceIT.java" />
+        <option value="$PROJECT_DIR$/src/tests/java/VideoServiceIT.java" />
         <option value="$PROJECT_DIR$/src/main/java/service/VideoServiceData.java" />
       </list>
     </option>
@@ -502,7 +509,7 @@
     <property name="project.structure.side.proportion" value="0.31264368" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/RuFramework-2.0.jar!/" />
   </component>
-  <component name="RunManager" selected="JUnit.AccountServiceIT">
+  <component name="RunManager" selected="JUnit.VideoServiceIT">
     <configuration default="false" name="Server" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -986,8 +993,8 @@
     </list>
     <recent_temporary>
       <list size="3">
-        <item index="0" class="java.lang.String" itemvalue="JUnit.AccountServiceIT" />
-        <item index="1" class="java.lang.String" itemvalue="JUnit.VideoServiceIT" />
+        <item index="0" class="java.lang.String" itemvalue="JUnit.VideoServiceIT" />
+        <item index="1" class="java.lang.String" itemvalue="JUnit.AccountServiceIT" />
         <item index="2" class="java.lang.String" itemvalue="Application.Server" />
       </list>
     </recent_temporary>
@@ -1011,7 +1018,7 @@
       <workItem from="1477264084733" duration="2572000" />
       <workItem from="1478041695839" duration="316000" />
       <workItem from="1478042044672" duration="183000" />
-      <workItem from="1478042274767" duration="21259000" />
+      <workItem from="1478042274767" duration="21617000" />
     </task>
     <servers />
   </component>
@@ -1022,14 +1029,8 @@
     <history-entry file="AccountServiceIT - 2016.11.02 at 05h 37m 17s.xml">
       <configuration name="AccountServiceIT" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="VideoServiceIT - 2016.11.02 at 05h 26m 08s.xml">
-      <configuration name="VideoServiceIT" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="VideoServiceIT - 2016.11.02 at 05h 26m 21s.xml">
-      <configuration name="VideoServiceIT" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="VideoServiceIT - 2016.11.02 at 05h 32m 58s.xml">
-      <configuration name="VideoServiceIT" configurationId="JUnit" />
+    <history-entry file="AccountServiceIT - 2016.11.02 at 05h 42m 11s.xml">
+      <configuration name="AccountServiceIT" configurationId="JUnit" />
     </history-entry>
     <history-entry file="VideoServiceIT - 2016.11.02 at 05h 33m 07s.xml">
       <configuration name="VideoServiceIT" configurationId="JUnit" />
@@ -1046,9 +1047,15 @@
     <history-entry file="VideoServiceIT - 2016.11.02 at 05h 36m 37s.xml">
       <configuration name="VideoServiceIT" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="VideoServiceIT - 2016.11.02 at 05h 42m 20s.xml">
+      <configuration name="VideoServiceIT" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="VideoServiceIT - 2016.11.02 at 05h 44m 37s.xml">
+      <configuration name="VideoServiceIT" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27549000" />
+    <option name="totallyTimeSpent" value="27907000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
@@ -1063,7 +1070,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2732167" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2732167" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32969153" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -1525,20 +1532,16 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/data/AccountData.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-136">
-          <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
+          <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
           <folding>
-            <marker date="1478041684545" expanded="true" signature="2387:2444" ph="select * fro... users" />
-            <marker date="1478041684545" expanded="true" signature="2578:2639" ph="select * fro... token" />
-            <marker date="1478041684545" expanded="true" signature="2878:2970" ph="update token... " />
-            <marker date="1478041684545" expanded="true" signature="3325:3371" ph="select * fro... users" />
-            <marker date="1478041684545" expanded="true" signature="3781:3845" ph="select * fro... users" />
-            <marker date="1478041684545" expanded="true" signature="4271:4319" ph="select * fro... token" />
-            <marker date="1478041684545" expanded="true" signature="4914:5008" ph="update users... " />
-            <marker date="1478041684545" expanded="true" signature="5383:5429" ph="select * fro... videos" />
-            <marker date="1478041684545" expanded="true" signature="5541:5618" ph="DELETE FROM " />
-            <marker date="1478041684545" expanded="true" signature="5754:5798" ph="DELETE FROM " />
-            <marker date="1478041684545" expanded="true" signature="5918:5961" ph="DELETE FROM " />
-            <marker date="1478041684545" expanded="true" signature="5995:6034" ph="DELETE FROM " />
+            <marker date="1478065176198" expanded="true" signature="2387:2444" ph="select * fro... users" />
+            <marker date="1478065176198" expanded="true" signature="2578:2639" ph="select * fro... token" />
+            <marker date="1478065176198" expanded="true" signature="2878:2970" ph="update token... " />
+            <marker date="1478065176198" expanded="true" signature="3325:3371" ph="select * fro... users" />
+            <marker date="1478065176198" expanded="true" signature="3781:3845" ph="select * fro... users" />
+            <marker date="1478065176198" expanded="true" signature="4271:4319" ph="select * fro... token" />
+            <marker date="1478065176198" expanded="true" signature="5717:5760" ph="DELETE FROM " />
+            <marker date="1478065176198" expanded="true" signature="5794:5833" ph="DELETE FROM " />
           </folding>
         </state>
       </provider>
@@ -1561,8 +1564,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/tests/java/AccountServiceIT.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="39" column="63" selection-start-line="39" selection-start-column="63" selection-end-line="39" selection-end-column="63" />
+        <state relative-caret-position="27">
+          <caret line="39" column="56" selection-start-line="39" selection-start-column="56" selection-end-line="39" selection-end-column="56" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1571,8 +1574,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/tests/java/VideoServiceIT.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="389">
-          <caret line="75" column="9" selection-start-line="75" selection-start-column="9" selection-end-line="75" selection-end-column="9" />
+        <state relative-caret-position="221">
+          <caret line="37" column="31" selection-start-line="37" selection-start-column="20" selection-end-line="37" selection-end-column="31" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1581,8 +1584,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/service/VideoServiceData.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="69" column="31" selection-start-line="69" selection-start-column="31" selection-end-line="69" selection-end-column="31" />
+        <state relative-caret-position="527">
+          <caret line="53" column="72" selection-start-line="53" selection-start-column="59" selection-end-line="53" selection-end-column="72" />
           <folding />
         </state>
       </provider>

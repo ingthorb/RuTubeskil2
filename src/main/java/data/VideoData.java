@@ -152,7 +152,7 @@ public class VideoData extends RuData implements VideoDataGateway {
     public void RemoveVideo(int videoId) throws videoNotFoundException, channelNotFoundException{
         JdbcTemplate queryContent = new JdbcTemplate(getDataSource());
 
-        //TODO remove video from fav videos
+        queryContent.execute("DELETE FROM favoritVideos WHERE videoID='" + videoId + "'");
 
         List<VideosInChannelModel> VideosInChannel = queryContent.query("select * from VideosInChannel", new VideosInChannelRowMapper());
 

@@ -130,6 +130,7 @@ public class VideoServiceData implements VideoService {
     public Response addVideoToChannel(String body, @HeaderParam("authorization")  String authorization )throws JsonProcessingException {
 
         Object videoToChannel = null;
+        Gson gson = new Gson();
 
         int userId;
 
@@ -153,11 +154,9 @@ public class VideoServiceData implements VideoService {
             videoDataGateway.addVideoToChannel((VideosInChannelModel)videoToChannel);
         } catch (videoNotFoundException ex) {
 
-            Gson gson = new Gson();
             String exception = gson.toJson(ex.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(exception).build();
         }catch(channelNotFoundException ex){
-            Gson gson = new Gson();
             String exception = gson.toJson(ex.getMessage());
             return Response.status(Response.Status.NOT_FOUND).entity(exception).build();
         }

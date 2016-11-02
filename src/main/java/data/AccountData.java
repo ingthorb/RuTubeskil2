@@ -152,7 +152,9 @@ public class AccountData extends RuData implements AccountDataGateway{
         }
 
         queryContent.execute("DELETE FROM videos WHERE userId='" + id + "'");
-        //queryContent.execute("DELETE FROM closeFriends WHERE userID='" + id + "'");
+
+        //TODO TEST
+        queryContent.execute("DELETE FROM closeFriends WHERE userID='" + id + "'");
         queryContent.execute("DELETE FROM token WHERE userID='" + id + "'");
         queryContent.execute("DELETE FROM users WHERE id='" + id + "'");
     }

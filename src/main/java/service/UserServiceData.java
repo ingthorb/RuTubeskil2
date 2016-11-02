@@ -6,12 +6,11 @@ import com.google.gson.Gson;
 import data.AccountDataGateway;
 import data.UserDataGateway;
 import data.VideoDataGateway;
-import exceptions.UnauthorizedException;
-import exceptions.UserAlreadyACloseFriendException;
-import exceptions.UserNotFoundException;
+import exceptions.*;
 import is.ruframework.data.RuDataAccessFactory;
 import is.ruframework.domain.RuException;
 import models.CloseFriendsModel;
+import models.FavoriteVideosModel;
 import models.VideoModel;
 import org.json.simple.JSONObject;
 
@@ -104,6 +103,68 @@ public class UserServiceData implements UserService{
         } catch (UserNotFoundException e) {
             String exception = gson.toJson(e.getMessage());
             return Response.status(Response.Status.CONFLICT).entity(exception).build();        }
+        return Response.status(Response.Status.OK).build();
+    }
+
+    @POST
+    @Path("/favoriteVideos")
+    @Produces(VideoModel.mediaType)
+    public Response addFavoriteVideo(String body, @HeaderParam("authorization")  String authorization )throws JsonProcessingException {
+
+        FavoriteVideosModel favoritVideo = null;
+        Gson gson = new Gson();
+
+        int userId;
+
+        try {
+            userId = accountDataGateway.getUserIdFromToken(authorization);
+        } catch (UnauthorizedException e) {
+            JSONObject unauthorized = new JSONObject();
+            unauthorized.put("Explanation", "Wrong token - You need to be signed in to perform this action ");
+            return Response.status(Response.Status.UNAUTHORIZED).entity(unauthorized.toJSONString()).build();
+        }
+
+        try {
+            favoritVideo = (FavoriteVideosModel) mapper(body, FavoriteVideosModel.class);
+        } catch (IOException e) {
+            return Response.status(Response.Status.PRECONDITION_FAILED).build();
+        }
+
+        int favoritVideoId = 0;
+
+        try {
+            favoritVideoId = userDataGateway.addFavoriteVideo(favoritVideo, userId);
+        } catch (videoNotFoundException e) {
+            String exception = gson.toJson(e.getMessage());
+            return Response.status(Response.Status.NOT_FOUND).entity(exception).build();
+        } catch (videoAlreadyAFavoritVideoxception e) {
+            String exception = gson.toJson(e.getMessage());
+            return Response.status(Response.Status.CONFLICT).entity(exception).build();
+        }
+        return Response.status(Response.Status.OK).build();
+    }
+
+    @DELETE
+    @Path("/favoriteVideos/{id}")
+    @Produces("application/json")
+    public Response deleteFavoritVideo(@HeaderParam("authorization") String authorization,@PathParam("id") int videoId) throws JsonProcessingException {
+        int userId;
+        Gson gson = new Gson();
+
+        try {
+            userId = accountDataGateway.getUserIdFromToken(authorization);
+        } catch (UnauthorizedException e) {
+            JSONObject unauthorized = new JSONObject();
+            unauthorized.put("Explanation", "Wrong token - You need to be signed in to perform this action ");
+            return Response.status(Response.Status.UNAUTHORIZED).entity(unauthorized.toJSONString()).build();
+        }
+
+        try {
+            userDataGateway.DeleteFavoritVideo(videoId,userId);
+        } catch (videoNotFoundException e) {
+            String exception = gson.toJson(e.getMessage());
+            return Response.status(Response.Status.CONFLICT).entity(exception).build();
+        }
         return Response.status(Response.Status.OK).build();
     }
 

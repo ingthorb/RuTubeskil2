@@ -1,5 +1,10 @@
 import com.google.gson.Gson;
+import data.AccountDataGateway;
+import exceptions.UserNotFoundException;
+import is.ruframework.data.RuDataAccessFactory;
+import is.ruframework.domain.RuException;
 import models.ChannelModel;
+import models.UserModel;
 import models.VideoModel;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -24,14 +29,19 @@ import static org.junit.Assert.assertEquals;
  */
 public class VideoServiceIT {
     App app;
+    AccountDataGateway accountDataGateway;
     final String url = "http://127.0.0.1:8080/videos";
     final String channelVideoUrl = "http://127.0.0.1:8080/videos/channel/video";
     final String channelUrl = "http://127.0.0.1:8080/videos/channel";
+
+    //User that exists in my database!
+    //Token = [B@5db60c16
+    UserModel userExisting = new UserModel("Mcfly","MartyJunior","marty@future.is","1234");
+
     VideoModel video = new VideoModel("Funny cat","Funny","Cat falls over","youtube.com",1);
     ChannelModel channel = new ChannelModel("TestChannel");
     RestTemplate restTemplate = new RestTemplate();
     HttpHeaders headers = new HttpHeaders();
-    String Auth = "[B@6e3be21f";
 
     @Before
     public void setup() throws Exception
@@ -43,9 +53,17 @@ public class VideoServiceIT {
         //Start the server.
         app.start();
         //Authentication hardcoded, we can get a user and then get his token later
+        RuDataAccessFactory factory = null;
+        try {
+            factory = RuDataAccessFactory.getInstance("data.xml");
+        } catch (RuException e) {
+            e.printStackTrace();
+        }
+        accountDataGateway = (AccountDataGateway)factory.getDataAccess("AccountDataGateway");
+
         RestTemplate restTemplate = new RestTemplate();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Authorization","[B@6e3be21f");
+        headers.set("Authorization","[B@5db60c16");
 
         System.out.println("Channel url: " + channelUrl);
         System.out.println("Channel : " + channel);
@@ -96,11 +114,13 @@ public class VideoServiceIT {
         /*
         Get the user with the ID 1
          */
-       // headers.add("Authorization","USERID1");
+
+
+        headers.add("Authorization","[B@5db60c16");
 
         System.out.println(headers.get("Content-Type"));
         //result posts video into the database
-        String result = restTemplate.postForObject(channelUrl,video, String.class);
+        String result = restTemplate.postForObject(url,video, String.class);
         //Videos get all the videos in the database
         String videos = restTemplate.getForObject(url, String.class);
 
@@ -115,14 +135,12 @@ public class VideoServiceIT {
     @Test
     public void addAVideoInChannel()
     {
-        //Get out of database some token
-        //Get the videos with a get request
-        /*
-        Get the user with the ID 1
-         */
-        // headers.add("Authorization","USERID1");
-      /*  System.out.println("");
-        //result posts video into the database
+        //Hardcoded
+        // headers.add("Authorization","[B@5db60c16");
+
+
+        //Post video into channel
+        //Það sem fer inn videoId og channelID
         String result = restTemplate.postForObject(channelUrl,video, String.class);
         //Get all the videos in the channel
         //Video id og channelID til að posta í channel

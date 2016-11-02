@@ -1,13 +1,11 @@
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import data.AccountDataGateway;
-import data.RowMappers.FavoritVideosRowMapper;
 import data.UserDataGateway;
 import data.VideoDataGateway;
-import exceptions.UnauthorizedException;
 import is.ruframework.data.RuDataAccessFactory;
 import is.ruframework.domain.RuException;
 import models.FavoriteVideosModel;
-import org.json.simple.JSONObject;
+import models.UserModel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +15,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
 import server.App;
 
-import javax.ws.rs.core.Response;
+import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -65,11 +63,7 @@ public class UserServiceIT {
         System.out.println(result2.getBody());
         String profile = "{\"Favorite videos\":[{\"id\":8,\"title\":\"MartyJunior\",\"type\":\"funny\",\"description\":\"Sfs\",\"src\":\"youtube.com\",\"userId\":91}],\"User information\":{\"id\":101,\"fullName\":\"Marty Mcfly\",\"userName\":\"b2221l2abw2\",\"email\":\"marty@future.is\",\"password\":\"*****\"},\"Close friends\":[]}";
 
-        boolean boolprofile = result2.getBody().equals(profile);
         assertEquals(profile,result2.getBody());
-        System.out.println(boolprofile);
-
-
     }
 
     @Test
@@ -80,11 +74,37 @@ public class UserServiceIT {
         String Token2 = "[B@5db60c16";
         headers.set("Authorization",Token2);
         String profile = "{\"Favorite videos\":[{\"id\":8,\"title\":\"MartyJunior\",\"type\":\"funny\",\"description\":\"Sfs\",\"src\":\"youtube.com\",\"userId\":91}],\"User information\":{\"id\":101,\"fullName\":\"Marty Mcfly\",\"userName\":\"b2221l2abw2\",\"email\":\"marty@future.is\",\"password\":\"*****\"},\"Close friends\":[]}";
-       FavoriteVideosModel favorite = new FavoriteVideosModel(userID,videoID);
+        FavoriteVideosModel favorite = new FavoriteVideosModel(userID,videoID);
         HttpEntity ent1 = new HttpEntity(favorite,headers);
         String result = restTemplate.postForObject(favURL, ent1, String.class);
-
     }
+
+    @Test
+    public void updateUserName()
+    {
+        String newUserName = "{\"userName\":\"NEWUSERNAME\"}";
+        String UserNAme = "NEWUSERNAME";
+        //CHANGE
+        String token = "[B@1e56a92";
+        headers.set("Authorization",token);
+        HttpEntity ent1 = new HttpEntity(newUserName,headers);
+
+        String result = restTemplate.postForObject(url, ent1, String.class);
+
+        ObjectMapper mapper = new ObjectMapper();
+        UserModel user = new UserModel();
+
+        try {
+            user = mapper.readValue(result,UserModel.class );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals(user.getUserName(),UserNAme);
+    }
+
+
+
     @After
     public void shutDownServer()
     {

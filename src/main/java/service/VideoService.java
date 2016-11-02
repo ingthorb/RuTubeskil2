@@ -20,7 +20,7 @@ public interface VideoService {
     /**
      *
      * @param body
-     * @param authorization
+     * @param authorization the token the user was given when he loged in/signed up
      * @return
      * @throws JsonProcessingException
      */
@@ -28,7 +28,7 @@ public interface VideoService {
 
     /**
      *
-     * @param authorization
+     * @param authorization the token the user was given when he loged in/signed up
      * @return
      * @throws JsonProcessingException
      */
@@ -37,7 +37,7 @@ public interface VideoService {
     /**
      *
      * @param body
-     * @param authorization
+     * @param authorization the token the user was given when he loged in/signed up
      * @return
      * @throws JsonProcessingException
      */
@@ -46,7 +46,7 @@ public interface VideoService {
     /**
      *
      * @param body
-     * @param authorization
+     * @param authorization the token the user was given when he loged in/signed up
      * @return
      * @throws JsonProcessingException
      */
@@ -55,7 +55,7 @@ public interface VideoService {
     /**
      *
      * @param id
-     * @param authorization
+     * @param authorization the token the user was given when he loged in/signed up
      * @return
      * @throws JsonProcessingException
      */
@@ -64,7 +64,7 @@ public interface VideoService {
     /**
      *
      * @param id
-     * @param authorization
+     * @param authorization the token the user was given when he loged in/signed up
      * @return
      * @throws JsonProcessingException
      */

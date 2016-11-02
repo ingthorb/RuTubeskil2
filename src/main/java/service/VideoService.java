@@ -71,11 +71,11 @@ public interface VideoService {
     public Response removeVideo(@PathParam("id") int id, @HeaderParam("authorization")  String authorization )throws JsonProcessingException;
 
     /**
-     *
-     * @param body
-     * @param model
-     * @return
-     * @throws IOException
+     *  Maps the body parameters to the UserModel URL
+     * @param body The body should include fullName, userName and password (REQUIRED) 
+     * @param model the model we want to map to
+     * @return Object with the User
+     * @throws IOException when unable to map ot object
      */
     public Object mapper(String body, Class model) throws IOException;
 

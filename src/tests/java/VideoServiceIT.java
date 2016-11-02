@@ -2,6 +2,7 @@
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.sun.research.ws.wadl.HTTPMethods;
 import data.AccountDataGateway;
 import is.ruframework.data.RuDataAccessFactory;
 import is.ruframework.domain.RuException;
@@ -15,8 +16,9 @@ import org.json.simple.parser.ParseException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import server.App;
@@ -31,13 +33,14 @@ public class VideoServiceIT {
     final String url = "http://127.0.0.1:8080/videos";
     final String channelVideoUrl = "http://127.0.0.1:8080/videos/channel/video";
     final String channelUrl = "http://127.0.0.1:8080/videos/channel";
+    final String channelUrlid = "http://127.0.0.1:8080/videos/channel/{id}";
     int channelnewID = 0;
     int videoID = 0;
 
     //User that exists in my database!
-    String Token = "[B@71d3af07";
+    String Token = "[B@1e56a92";
     UserModel userExisting = new UserModel("Mcfly","MartyJunior","marty@future.is","1234");
-    VideoModel video = new VideoModel("Funny cat","Funny","Cat falls over","youtube.com",1);
+    VideoModel video = new VideoModel("Funny cat","Funny","Cat falls over","youtube.com",2);
     ChannelModel channel = new ChannelModel("TestChannel");
     RestTemplate restTemplate = new RestTemplate();
     HttpHeaders headers = new HttpHeaders();
@@ -60,13 +63,16 @@ public class VideoServiceIT {
         }
         accountDataGateway = (AccountDataGateway)factory.getDataAccess("AccountDataGateway");
 
+
         RestTemplate restTemplate = new RestTemplate();
-        headers.setContentType(MediaType.APPLICATION_JSON);
+      //  headers.setContentType(MediaType.APPLICATION_JSON);
        // headers.set("Authorization","[B@71d3af07");
         headers.set("Authorization",Token);
+
+        HttpEntity ent = new HttpEntity(channel,headers);
         String result = null;
         try{
-            result = restTemplate.postForObject(channelUrl ,channel, String.class);
+            result = restTemplate.postForObject(channelUrl ,ent, String.class);
         }
         catch (HttpClientErrorException hp)
         {
@@ -75,7 +81,9 @@ public class VideoServiceIT {
         channelnewID = Integer.parseInt(result);
 
         //Making sure that the database isn't empty so we can safely delete a video that exists
-        String result2 = restTemplate.postForObject(url,video, String.class);
+        HttpEntity ent1 = new HttpEntity(video,headers);
+
+        String result2 = restTemplate.postForObject(url,ent1, String.class);
         //Need to save the id that result gives us so we can add to channel
         videoID = Integer.parseInt(result2);
     }
@@ -91,7 +99,10 @@ public class VideoServiceIT {
         String explanation = "401 Unauthorized";
         String result = null;
         try{
-            result = restTemplate.postForObject(url,video, String.class);
+            headers.set("Authorization",Token);
+            HttpEntity ent = new HttpEntity(video,headers);
+
+            result = restTemplate.postForObject(url,ent, String.class);
         }
         catch (HttpClientErrorException htp)
         {
@@ -106,7 +117,9 @@ public class VideoServiceIT {
     @Test
     public void addAVideo()
     {
-        String result2 = restTemplate.postForObject(url,video, String.class);
+        HttpEntity ent1 = new HttpEntity(video,headers);
+
+        String result2 = restTemplate.postForObject(url,ent1, String.class);
 
         //Get out of database some token
         //Get the videos with a get request
@@ -145,7 +158,10 @@ public class VideoServiceIT {
         String result = null;
         try
         {
-            result = restTemplate.postForObject(channelVideoUrl, videochannel, String.class);
+
+            HttpEntity ent1 = new HttpEntity(videochannel,headers);
+
+            result = restTemplate.postForObject(channelVideoUrl, ent1, String.class);
         }
         catch(HttpClientErrorException hp)
         {
@@ -154,10 +170,12 @@ public class VideoServiceIT {
         }
 
         final String checkChannelURL = "http://127.0.0.1:8080/videos/channel/video/" + channelnewID;
-        String result2 = null;
+        //String result2 = null;
         try
         {
-            result2 = restTemplate.getForObject(checkChannelURL, String.class);
+            HttpEntity<String> ent2 = new HttpEntity<String>(headers);
+
+            HttpEntity<String> result2 = restTemplate.exchange(checkChannelURL, HttpMethod.GET, ent2 ,String.class, "");
         }
         catch (HttpClientErrorException hs)
         {
@@ -192,14 +210,17 @@ public class VideoServiceIT {
         final String deleteVideoUrl = "http://127.0.0.1:8080/videos/" + videoID;
         System.out.println(deleteVideoUrl);
 
+        HttpEntity ent1 = new HttpEntity(headers);
 
         //Delete the video
-        restTemplate.delete(deleteVideoUrl,String.class);
+        restTemplate.delete(deleteVideoUrl,ent1,String.class);
         //Get all the videos in the channel
 
         //Returns a list of videos<VideoModel>
         String videos = null;
         try {
+            HttpEntity ent2 = new HttpEntity(headers);
+
             videos = restTemplate.getForObject(url, String.class);
         }
         catch (HttpClientErrorException hs)

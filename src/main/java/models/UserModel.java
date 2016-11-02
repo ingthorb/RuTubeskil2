@@ -48,6 +48,20 @@ public class UserModel {
         this.password = password;
     }
 
+
+    public UserModel(int id, String fullName, String userName, String email) {
+        this.id = id;
+        this.fullName = fullName;
+        this.userName = userName;
+        this.email = email;
+    }
+
+    public UserModel(String fullName , String userName, String email) {
+        this.fullName = fullName;
+        this.userName = userName;
+        this.email = email;
+    }
+
     public int getId() {
         return id;
     }

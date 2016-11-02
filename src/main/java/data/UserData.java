@@ -4,18 +4,17 @@ import data.RowMappers.CloseFriendsRowMapper;
 import data.RowMappers.FavoritVideosRowMapper;
 import data.RowMappers.UserRowMapper;
 import data.RowMappers.VideoRowMapper;
-import exceptions.UserAlreadyACloseFriendException;
-import exceptions.UserNotFoundException;
-import exceptions.videoAlreadyAFavoritVideoxception;
-import exceptions.videoNotFoundException;
+import exceptions.*;
 import is.ruframework.data.RuData;
 import models.CloseFriendsModel;
 import models.FavoriteVideosModel;
 import models.UserModel;
 import models.VideoModel;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -128,5 +127,68 @@ public class UserData extends RuData implements UserDataGateway {
             throw new videoNotFoundException("Video not in favoriteList");
         }
         queryContent.execute("DELETE FROM favoritVideos WHERE videoID='" + videoId + "'");
+    }
+
+    public UserModel updateUser(UserModel userInfoToChange,int userId) throws UserAlreadyExistsException{
+
+        JdbcTemplate queryContent = new JdbcTemplate(getDataSource());
+
+        if(userInfoToChange.getFullName() != null)
+        {
+            queryContent.execute("update users set fullName ='" + userInfoToChange.getFullName() + "' WHERE id = '" + userId +"'");
+        }
+        if(userInfoToChange.getUserName() != null)
+        {
+            //TODO check if userName exists
+            try{
+                queryContent.execute("update users set userName ='" + userInfoToChange.getUserName() + "' WHERE id = '" + userId +"'");
+            }
+            catch (DataIntegrityViolationException divex)
+            {
+                throw new UserAlreadyExistsException("User with this User name already Exists");
+            }
+
+        }
+        if(userInfoToChange.getEmail() != null)
+        {
+            queryContent.execute("update users set email ='" + userInfoToChange.getEmail() + "' WHERE id = '" + userId +"'");
+        }
+
+        return getUser(userId);
+    }
+
+    public UserModel getUser(int userId)
+    {
+        JdbcTemplate queryContent = new JdbcTemplate(getDataSource());
+        List<UserModel> user = queryContent.query("select * from users  where id ='" + userId + "'", new UserRowMapper());
+        UserModel temp = new UserModel(user.get(0).getId(),user.get(0).getFullName(),user.get(0).getUserName(),user.get(0).getEmail(), "*****");
+        return temp;
+    }
+
+    public List<UserModel> getCloseFriends(int userId)
+    {
+        JdbcTemplate queryContent = new JdbcTemplate(getDataSource());
+        List<CloseFriendsModel> users = queryContent.query("select * from closeFriends  where userID ='" + userId + "'", new CloseFriendsRowMapper());
+        List<UserModel> closeFriendsInfo = new ArrayList<UserModel>();
+        for(int i = 0; i < users.size(); i++){
+            List<UserModel> user = queryContent.query("select * from users where id ='" + users.get(i).getUserID() + "'", new UserRowMapper());
+
+            UserModel temp = new UserModel(user.get(0).getId(),user.get(0).getFullName(),user.get(0).getUserName(),user.get(0).getEmail());
+            closeFriendsInfo.add(temp);
+        }
+        return closeFriendsInfo;
+    }
+
+    public List<VideoModel>  getFavoriteVideos(int userId)
+    {
+        JdbcTemplate queryContent = new JdbcTemplate(getDataSource());
+        List<FavoriteVideosModel> favoriteVideos = queryContent.query("select * from favoritVideos  where userID ='" + userId + "'", new FavoritVideosRowMapper());
+        List<VideoModel> videos = new ArrayList<VideoModel>();
+
+        for(int i = 0; i < favoriteVideos.size(); i++){
+            List<VideoModel> video = queryContent.query("select * from videos where id ='" + favoriteVideos.get(i).getVideoID() + "'", new VideoRowMapper());
+            videos.add(video.get(0));
+        }
+        return videos;
     }
 }

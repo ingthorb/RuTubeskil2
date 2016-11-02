@@ -139,7 +139,6 @@ public class UserData extends RuData implements UserDataGateway {
         }
         if(userInfoToChange.getUserName() != null)
         {
-            //TODO check if userName exists
             try{
                 queryContent.execute("update users set userName ='" + userInfoToChange.getUserName() + "' WHERE id = '" + userId +"'");
             }

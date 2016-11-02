@@ -149,7 +149,6 @@ public class AccountServiceData implements AccountService{
     @Path("/user")
     @Produces("application/json")
     public Response deleteUser(@HeaderParam("authorization") String authorization) throws JsonProcessingException {
-        //TODO klára testa
         int userId;
 
         try {

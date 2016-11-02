@@ -32,6 +32,10 @@ public class VideosInChannelModel {
         this.videoID = videoID;
         this.channelID = channelID;
     }
+    public VideosInChannelModel(int videoID, int channelID) {
+        this.videoID = videoID;
+        this.channelID = channelID;
+    }
 
     public int getVideoID() {
         return videoID;

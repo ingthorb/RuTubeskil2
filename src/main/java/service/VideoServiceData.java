@@ -172,7 +172,7 @@ public class VideoServiceData implements VideoService {
 
         int userId;
 
-        try {
+       try {
             userId = accountDataGateway.getUserIdFromToken(authorization);
         } catch (UnauthorizedException e) {
             JSONObject unauthorized = new JSONObject();

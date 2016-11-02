@@ -37,7 +37,7 @@ public class AccountServiceIT extends RuData{
     Login wrongPassword = new Login("MartyJunior","1233333");
 
     //Need to change before test
-    UserModel newUser = new UserModel("Marty Mcfly","Back","marty@future.is","1234");
+    UserModel newUser = new UserModel("Marty Mcfly","Bacsssssssk","marty@future.is","1234");
 
     RestTemplate restTemplate = new RestTemplate();
     HttpHeaders headers = new HttpHeaders();

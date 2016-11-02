@@ -32,6 +32,11 @@ public class FavoriteVideosModel {
         this.videoID = videoID;
     }
 
+    public FavoriteVideosModel( int userID, int videoID) {
+        this.userID = userID;
+        this.videoID = videoID;
+    }
+
     public static String getMediaType() {
         return mediaType;
     }
